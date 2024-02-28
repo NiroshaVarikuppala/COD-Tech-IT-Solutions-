@@ -1,67 +1,100 @@
-import random
+import java.util.Scanner;
 
-def print_board(board):
-    for row in board:
-        print(" | ".join(row))
-        print("-" * 13)
+public class TicTacToe {
+    private static char[][] board = new char[3][3];
+    private static char currentPlayer = 'X';
 
-def check_winner(board, player):
-    # Check rows, columns, and diagonals for a win
-    for i in range(3):
-        if all(board[i][j] == player for j in range(3)) or all(board[j][i] == player for j in range(3)):
-            return True
-    if all(board[i][i] == player for i in range(3)) or all(board[i][2 - i] == player for i in range(3)):
-        return True
-    return False
+    public static void main(String[] args) {
+        initializeBoard();
+        printBoard();
 
-def is_board_full(board):
-    return all(board[i][j] != ' ' for i in range(3) for j in range(3))
+        Scanner scanner = new Scanner(System.in);
 
-def is_valid_move(board, row, col):
-    return 0 <= row < 3 and 0 <= col < 3 and board[row][col] == ' '
+        while (true) {
+            System.out.println("Player " + currentPlayer + "'s turn. Enter row and column (e.g., 1 1): ");
+            int row = scanner.nextInt() - 1;
+            int col = scanner.nextInt() - 1;
 
-def get_human_move():
-    try:
-        row = int(input("Enter the row (0, 1, or 2): "))
-        col = int(input("Enter the column (0, 1, or 2): "))
-        return row, col
-    except ValueError:
-        print("Invalid input. Please enter valid row and column numbers.")
-        return get_human_move()
+            if (isValidMove(row, col)) {
+                board[row][col] = currentPlayer;
+                printBoard();
 
-def get_computer_move(board):
-    empty_cells = [(i, j) for i in range(3) for j in range(3) if board[i][j] == ' ']
-    return random.choice(empty_cells)
+                if (checkWin()) {
+                    System.out.println("Player " + currentPlayer + " wins!");
+                    break;
+                } else if (isBoardFull()) {
+                    System.out.println("It's a draw!");
+                    break;
+                }
 
-def play_tic_tac_toe():
-    board = [[' ' for _ in range(3)] for _ in range(3)]
-    current_player = 'X'
+                currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+            } else {
+                System.out.println("Invalid move. Please try again.");
+            }
+        }
 
-    print("Welcome to Tic-Tac-Toe!")
-    print_board(board)
+        scanner.close();
+    }
 
-    while True:
-        if current_player == 'X':
-            print("Player X's turn:")
-            row, col = get_human_move()
-        else:
-            print("Player O's turn:")
-            row, col = get_computer_move(board)
+    private static void initializeBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board[i][j] = '-';
+            }
+        }
+    }
 
-        if is_valid_move(board, row, col):
-            board[row][col] = current_player
-            print_board(board)
+    private static void printBoard() {
+        System.out.println("-------------");
+        for (int i = 0; i < 3; i++) {
+            System.out.print("| ");
+            for (int j = 0; j < 3; j++) {
+                System.out.print(board[i][j] + " | ");
+            }
+            System.out.println();
+            System.out.println("-------------");
+        }
+    }
 
-            if check_winner(board, current_player):
-                print(f"Player {current_player} wins!")
-                break
-            elif is_board_full(board):
-                print("It's a draw!")
-                break
+    private static boolean isValidMove(int row, int col) {
+        return row >= 0 && row < 3 && col >= 0 && col < 3 && board[row][col] == '-';
+    }
 
-            current_player = 'O' if current_player == 'X' else 'X'
-        else:
-            print("Invalid move. The cell is already taken or out of bounds. Try again.")
+    private static boolean checkWin() {
+        return checkRows() || checkColumns() || checkDiagonals();
+    }
 
-if __name__ == "__main__":
-    play_tic_tac_toe()
+    private static boolean checkRows() {
+        for (int i = 0; i < 3; i++) {
+            if (board[i][0] == currentPlayer && board[i][1] == currentPlayer && board[i][2] == currentPlayer) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkColumns() {
+        for (int i = 0; i < 3; i++) {
+            if (board[0][i] == currentPlayer && board[1][i] == currentPlayer && board[2][i] == currentPlayer) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkDiagonals() {
+        return (board[0][0] == currentPlayer && board[1][1] == currentPlayer && board[2][2] == currentPlayer) ||
+                (board[0][2] == currentPlayer && board[1][1] == currentPlayer && board[2][0] == currentPlayer);
+    }
+
+    private static boolean isBoardFull() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j] == '-') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
