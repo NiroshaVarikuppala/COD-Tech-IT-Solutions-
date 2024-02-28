@@ -1,34 +1,37 @@
-import random
+import java.util.Scanner;
+import java.util.Random;
 
-def number_guessing_game():
-    # Generate a random number between 1 and 100
-    secret_number = random.randint(1, 100)
+public class NumberGuessingGame {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
 
-    # Set the maximum number of attempts
-    max_attempts = 10
-    attempts = 0
+        int secretNumber = random.nextInt(100) + 1;
+        int attempts = 0;
+        int maxAttempts = 10;
 
-    print("Welcome to the Number Guessing Game!")
-    print("I have selected a random number between 1 and 100.")
-    print("Try to guess the number within", max_attempts, "attempts.")
+        System.out.println("Welcome to the Number Guessing Game!");
+        System.out.println("I have selected a number between 1 and 100. Try to guess it within " + maxAttempts + " attempts.");
 
-    while attempts < max_attempts:
-        # Take user input for the guess
-        guess = int(input("Enter your guess: "))
-        attempts += 1
+        while (attempts < maxAttempts) {
+            System.out.print("Enter your guess: ");
+            int guess = scanner.nextInt();
+            attempts++;
 
-        # Check if the guess is correct
-        if guess == secret_number:
-            print("Congratulations! You guessed the correct number in", attempts, "attempts.")
-            break
-        elif guess < secret_number:
-            print("Too low! Try again.")
-        else:
-            print("Too high! Try again.")
+            if (guess == secretNumber) {
+                System.out.println("Congratulations! You've guessed the number " + secretNumber + " correctly in " + attempts + " attempts.");
+                break;
+            } else if (guess < secretNumber) {
+                System.out.println("Too low! Try again.");
+            } else {
+                System.out.println("Too high! Try again.");
+            }
+        }
 
-    # If the player couldn't guess the number within the allowed attempts
-    if attempts == max_attempts:
-        print("Sorry, you have reached the maximum number of attempts. The correct number was", secret_number)
+        if (attempts == maxAttempts) {
+            System.out.println("Sorry, you've run out of attempts. The correct number was " + secretNumber + ".");
+        }
 
-# Run the game
-number_guessing_game()
+        scanner.close();
+    }
+}
