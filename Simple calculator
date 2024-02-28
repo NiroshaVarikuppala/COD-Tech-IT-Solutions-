@@ -1,50 +1,55 @@
-def add(x, y):
-    return x + y
+import java.util.Scanner;
 
-def subtract(x, y):
-    return x - y
+public class Calculator {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
-def multiply(x, y):
-    return x * y
+        System.out.println("Welcome to Basic Calculator!");
 
-def divide(x, y):
-    if y != 0:
-        return x / y
-    else:
-        return "Error: Cannot divide by zero"
+        // Input first number
+        System.out.print("Enter the first number: ");
+        double num1 = scanner.nextDouble();
 
-while True:
-    # Take user input for operation choice
-    print("Select operation:")
-    print("1. Add")
-    print("2. Subtract")
-    print("3. Multiply")
-    print("4. Divide")
-    print("5. Exit")
-    
-    choice = input("Enter choice (1/2/3/4/5): ")
+        // Input second number
+        System.out.print("Enter the second number: ");
+        double num2 = scanner.nextDouble();
 
-    # Check if the choice is to exit
-    if choice == '5':
-        print("Exiting the calculator. Goodbye!")
-        break
+        // Choose operation
+        System.out.println("Choose the operation:");
+        System.out.println("1. Addition (+)");
+        System.out.println("2. Subtraction (-)");
+        System.out.println("3. Multiplication (*)");
+        System.out.println("4. Division (/)");
+        System.out.print("Enter your choice: ");
+        int choice = scanner.nextInt();
 
-    # Take user input for numbers
-    num1 = float(input("Enter first number: "))
-    num2 = float(input("Enter second number: "))
+        double result = 0;
 
-    # Perform the chosen operation
-    if choice == '1':
-        result = add(num1, num2)
-    elif choice == '2':
-        result = subtract(num1, num2)
-    elif choice == '3':
-        result = multiply(num1, num2)
-    elif choice == '4':
-        result = divide(num1, num2)
-    else:
-        print("Invalid input. Please enter a valid choice.")
-        continue
+        // Perform operation based on user's choice
+        switch (choice) {
+            case 1:
+                result = num1 + num2;
+                break;
+            case 2:
+                result = num1 - num2;
+                break;
+            case 3:
+                result = num1 * num2;
+                break;
+            case 4:
+                if (num2 != 0) {
+                    result = num1 / num2;
+                } else {
+                    System.out.println("Error: Division by zero!");
+                    return;
+                }
+                break;
+            default:
+                System.out.println("Invalid choice!");
+                return;
+        }
 
-    # Display the result
-    print("Result: ", result)
+        System.out.println("Result: " + result);
+        scanner.close();
+    }
+}
